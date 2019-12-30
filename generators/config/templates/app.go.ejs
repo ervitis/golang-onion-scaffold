@@ -1,0 +1,15 @@
+package config
+
+import "github.com/kelseyhightower/envconfig"
+
+type AppConfig struct {
+Port string `envconfig:"SERV_PORT" default:":8080"`
+}
+
+var (
+App AppConfig
+)
+
+func Load() {
+_ = envconfig.Process("", &App)
+}

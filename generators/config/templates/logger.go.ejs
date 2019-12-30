@@ -1,0 +1,17 @@
+package config
+
+import (
+"github.com/ervitis/logme"
+"github.com/ervitis/logme/config_loaders"
+"github.com/ervitis/logme/hooks"
+"path/filepath"
+)
+
+func Log() (logme.Loggerme, error) {
+
+// Set the configuration for the logger
+
+hs := []logme.Hook{hooks.NewStackHook()}
+
+return logme.NewLogme(cfg, hs...), nil
+}

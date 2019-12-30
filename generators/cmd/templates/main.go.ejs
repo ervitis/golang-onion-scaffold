@@ -1,0 +1,37 @@
+package main
+
+import (
+  "net/http"
+  "<%- projectName %>/api"
+  "<%- projectName %>/config"
+  "<%- projectName %>/service/healthchecker"
+  "<%- projectName %>/service/metrics"
+)
+
+func otherHandlers() {
+  healthHandler := healthchecker.NewHealthCheck("/health", http.StatusOK, http.StatusInternalServerError)
+  prometheusHandler := metrics.NewPrometheusRouter("/metrics")
+
+  go func() {
+    panic(http.ListenAndServe(healthchecker.HealthCheckPort, healthHandler))
+  }()
+
+  go func() {
+    panic(http.ListenAndServe(metrics.PrometheusRouterPort, prometheusHandler))
+  }()
+}
+
+func main() {
+  config.Load()
+
+  log, err := config.ConfigLogger()
+  if err != nil {
+    panic(err)
+  }
+
+  handler := &api.Handler{Controller: api.Controller{}, Log: log}
+
+  otherHandlers()
+
+  panic(http.ListenAndServe(config.App.Port, handler.RoutesController()))
+}

@@ -1,0 +1,46 @@
+package model
+
+import (
+"fmt"
+"github.com/xeipuuv/gojsonschema"
+"path/filepath"
+)
+
+type (
+ModelValidator struct{}
+
+Validator struct {
+absPath string
+}
+
+IfaceValidator interface {
+ValidateData(data []byte, schemaPath string) (bool, error)
+}
+)
+
+func NewValidator() IfaceValidator {
+p, _ := filepath.Abs(".")
+p += "/model/validator/data"
+
+return &Validator{absPath: p}
+}
+
+func (v *Validator) ValidateData(data []byte, schemaPath string) (bool, error) {
+loader := gojsonschema.NewReferenceLoader("file://" + v.absPath + "/" + schemaPath)
+doc := gojsonschema.NewBytesLoader(data)
+
+vs, err := gojsonschema.Validate(loader, doc)
+if err != nil {
+return false, err
+}
+
+var s string
+for _, e := range vs.Errors() {
+s += fmt.Sprintf("%s, ", e.String())
+}
+if s != "" {
+return false, fmt.Errorf(s)
+}
+return vs.Valid(), nil
+}
+

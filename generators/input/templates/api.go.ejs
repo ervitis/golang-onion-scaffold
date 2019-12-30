@@ -1,0 +1,25 @@
+package api
+
+import (
+"github.com/ervitis/logme"
+"github.com/gorilla/mux"
+)
+
+type (
+Handler struct {
+Controller Controller
+Log        logme.Loggerme
+}
+
+Controller struct {
+// types used in controllers
+}
+)
+
+func (h *Handler) RoutesController() *mux.Router {
+r := mux.NewRouter()
+
+// Handle functions in router
+
+return r
+}

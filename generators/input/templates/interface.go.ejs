@@ -1,0 +1,54 @@
+package clients
+
+import "encoding/json"
+
+type (
+Handler   func([]byte) error
+Condition struct {
+Key   string
+Value string
+}
+
+Options struct {
+Address string
+Port    int
+}
+
+common struct{
+conditions []Condition
+}
+
+CommonFn interface {
+filter(msg []byte) bool
+}
+
+Bus interface {
+Connect(options Options) error
+Publish([]byte, string) error
+Subscribe(string, Handler, ...Condition) error
+}
+)
+
+func (c *common) filter(msg []byte) bool {
+var data map[string]interface{}
+_ = json.Unmarshal(msg, &data)
+
+n := len(c.conditions)
+count := 0
+
+if n == 0 {
+return true
+}
+
+for _, condition := range c.conditions {
+if _, ok := data[condition.Key]; !ok {
+continue
+}
+
+if data[condition.Key] == condition.Value {
+count++
+}
+}
+
+return n == count
+}

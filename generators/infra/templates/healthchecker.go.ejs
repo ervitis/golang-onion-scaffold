@@ -1,0 +1,17 @@
+package healthchecker
+
+import (
+"github.com/ervitis/gohealthchecker"
+"github.com/gorilla/mux"
+)
+
+const HealthCheckPort = ":8081"
+
+func NewHealthCheck(path string, statusOk, statusKo int) *mux.Router {
+h := gohealthchecker.NewHealthchecker(statusOk, statusKo)
+
+// Add healthchecks here
+// h.Add(...)
+
+return h.ActivateHealthCheck(path)
+}

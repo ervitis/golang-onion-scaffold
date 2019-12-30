@@ -1,0 +1,15 @@
+package metrics
+
+import (
+"github.com/gorilla/mux"
+"github.com/prometheus/client_golang/prometheus/promhttp"
+)
+
+const PrometheusRouterPort = ":2112"
+
+func NewPrometheusRouter(path string) *mux.Router {
+r := mux.NewRouter()
+
+r.Handle(path, promhttp.Handler())
+return r
+}

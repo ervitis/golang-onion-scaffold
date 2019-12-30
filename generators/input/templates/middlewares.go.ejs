@@ -1,0 +1,11 @@
+package api
+
+import "net/http"
+
+func (h *Handler) middlewareOne(handler http.Handler) http.HandlerFunc {
+return func(w http.ResponseWriter, r *http.Request) {
+// do something in middleware
+
+handler.ServeHTTP(w, r)
+}
+}
