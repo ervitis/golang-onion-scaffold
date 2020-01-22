@@ -2,7 +2,7 @@ const Generator = require('../../helper/generator')
 
 module.exports = class extends Generator {
   constructor (args, options) {
-    super(args, options, 'cli', ['repoName', 'projectName', 'repoUser', 'dbLayer', 'validator'])
+    super(args, options, 'cli', ['repoName', 'projectName', 'repoUser'])
   }
 
   async prompting () {
