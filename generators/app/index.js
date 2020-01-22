@@ -3,7 +3,7 @@ const mkdir = require('mkdirp')
 
 module.exports = class extends Generator {
   constructor (args, opts) {
-    super(args, opts, 'app', ['projectName', 'repoUser', 'repoName', 'dir', 'dbLayer', 'validator'])
+    super(args, opts, 'app', ['projectName', 'repoUser', 'repoName', 'dir'])
 
     this.listdirs = ['../cmd/index.js', '../config/index.js', '../db/index.js', '../infra/index.js', '../input/index.js', '../model/index.js', '../usecase/index.js', '../validator/index.js']
   }
